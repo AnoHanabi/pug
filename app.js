@@ -6,6 +6,7 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+const catalogRouter = require('./routes/catalog');  // 导入 catalog 路由
 
 var app = express();
 
@@ -16,8 +17,6 @@ mongoose.Promise = global.Promise;
 var db = mongoose.connection;
 db.on("error", console.error.bind(console, "mongodb 连接错误："));
 
-const catalogRouter = require('./routes/catalog');  // 导入 catalog 路由
-app.use('/catalog', catalogRouter);  // 将 catalog 路由添加进中间件链
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -31,6 +30,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/catalog', catalogRouter);  // 将 catalog 路由添加进中间件链
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
